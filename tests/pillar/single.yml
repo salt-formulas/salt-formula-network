@@ -1,0 +1,5 @@
+network:
+  control:
+    enabled: true
+    bind:
+      address: 0.0.0.0
