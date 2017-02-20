@@ -13,8 +13,27 @@ default:
   - netmiko
   - pyPluribus
   - pan-python
+  - napalm
   dir:
     base: /srv/network
 {%- endload %}
 
 {%- set control = salt['grains.filter_by'](base_defaults, merge=salt['pillar.get']('network:control')) %}
+
+{% set proxy = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['python-pip', 'libxml2-dev', 'libxslt1-dev', 'zlib1g-dev'],
+        'pip_pkgs': ['napalm'],
+        'services': ['salt-master']
+    },
+    'RedHat': {
+        'pkgs': ['libxml2-dev', 'libxslt1-dev', 'zlib1g-dev']
+    },
+}, merge=pillar.network.get('proxy', {})) %}
+
+
+
+
+
+
+
