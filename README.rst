@@ -8,46 +8,6 @@ Sets up network devices.
 Sample pillars
 ==============
 
-
-Salt-proxy pillar on salt-master
-
-.. code-block:: yaml
-
-
-    network:
-      proxy:
-        enabled: true
-        devices:
-        - vsrx01
-        - csr1000v
-
-
-Proxy pillar of IOS device
-
-.. code-block:: yaml
-
-    proxy:
-      proxytype: napalm
-      driver: ios
-      host: csr1000v
-      username: root
-      passwd: r00tme
-
-
-Proxy pillar of JunOS device
-
-.. code-block:: yaml
-
-    proxy:
-      proxytype: napalm
-      driver: junos
-      host: vsrx01
-      username: root
-      passwd: r00tme
-      optional_args:
-        config_format: set
-
-
 Cisco IOS interfaces setup 
 
 .. code-block:: yaml
@@ -63,14 +23,14 @@ Cisco IOS interfaces setup
           g0/1:
             subinterfaces:
               0:
-                description: goest to network 1
+                description: goesToNetworkX
                 address: 10.0.0.1
                 mask: 255.255.255.0
                 mtu: 1500
           loopback0:
             subinterfaces:
               0:
-                description: for mpls vpn
+                description: goesToNetworkY
                 address: 10.0.0.1
                 mask: 255.255.255.0
 
@@ -83,6 +43,7 @@ Cisco IOS routing setup
         csr1000v:
           type: ios
           kind: router
+          domain: example.local
           auth:
             password: r00tme
             user: root
@@ -142,7 +103,7 @@ Cisco IOS switch interfaces setup
         config:
           switch_vlan:
             loopback0:
-              description: for testing purposes
+              description: goesToNetworkX
               address: 10.0.0.1
               mask: 255.255.255.0
             Port-channel1:
@@ -176,6 +137,7 @@ Cisco IOS switch setup
           c3560:
             type: ios
             kind: switch
+            domain: example.local
             auth:
               password: r00tme
               user: root
@@ -203,17 +165,17 @@ JunOS interfaces setup
             ge-0/0/1:
               units:
                 0:
-                  description: goest to network 1
+                  description: goesToNetworkX
                   address: 10.0.0.1/24
             ge-0/0/0:
               units:
                 0:
-                  description: goes to network 2
+                  description: goesToNetworkY
                   address: 172.16.10.90/24
             xe-2/0/0:
               gigether_options: 802.3ad ae0
             ae0:
-              description: going LACP
+              description: goesToNetworkX
               tagging_support_type: flexible-vlan-tagging
               aggreg_ether_opts:
                 protocol: lacp
@@ -221,11 +183,11 @@ JunOS interfaces setup
               mtu: 9000
               units:
                 110:
-                  description: goes to branch 1
+                  description: goesToNetworkX
                   vlan_id: 110
                   address: 11.0.0.1/24
                 120:
-                  description: goes to branch 2
+                  description: goesToNetworkX
                   vlan-id: 120
                   address: 12.0.0.1/24
 
@@ -233,9 +195,22 @@ JunOS routing options setup
 
 .. code-block:: yaml
 
+    network:
+      control:
+        enabled: true
+        managed: true
+        replace_entire_config: False
+        commit: True
         device:
           vsrx01:
             type: junos
+            timezone: Europe/Prague
+            nameservers:
+            - 8.8.8.8
+            - 8.8.4.4
+            ntp_servers:
+            - 46.243.48.4
+            - 147.251.48.140
             auth:
               password: r00tme
               user: root
@@ -254,9 +229,22 @@ JunOS protocols setup
 
 .. code-block:: yaml
 
+    network:
+      control:
+        enabled: true
+        managed: true
+        replace_entire_config: False
+        commit: True
         device:
           vsrx01:
             type: junos
+            timezone: Europe/Prague
+            nameservers:
+            - 8.8.8.8
+            - 8.8.4.4
+            ntp_servers:
+            - 46.243.48.4
+            - 147.251.48.140
             auth:
               password: cloudlab
               user: root
@@ -312,9 +300,22 @@ JunOS policy options setup
 
 .. code-block:: yaml
 
+    network:
+      control:
+        enabled: true
+        managed: true
+        replace_entire_config: False
+        commit: True
         device:
           vsrx01:
             type: junos
+            timezone: Europe/Prague
+            nameservers:
+            - 8.8.8.8
+            - 8.8.4.4
+            ntp_servers:
+            - 46.243.48.4
+            - 147.251.48.140
             auth:
               password: cloudlab
               user: root
@@ -349,9 +350,22 @@ JunOS security setup
 
 .. code-block:: yaml
 
+    network:
+      control:
+        enabled: true
+        managed: true
+        replace_entire_config: False
+        commit: True
         device:
           vsrx01:
             type: junos
+            timezone: Europe/Prague
+            nameservers:
+            - 8.8.8.8
+            - 8.8.4.4
+            ntp_servers:
+            - 46.243.48.4
+            - 147.251.48.140
             auth:
               password: cloudlab
               user: root
@@ -369,9 +383,22 @@ JunOS routing instances setup
 
 .. code-block:: yaml
 
+    network:
+      control:
+        enabled: true
+        managed: true
+        replace_entire_config: False
+        commit: True
         device:
           vsrx01:
             type: junos
+            timezone: Europe/Prague
+            nameservers:
+            - 8.8.8.8
+            - 8.8.4.4
+            ntp_servers:
+            - 46.243.48.4
+            - 147.251.48.140
             auth:
               password: cloudlab
               user: root

@@ -6,5 +6,6 @@ parameters:
   network:
     control:
       enabled: true
-      bind:
-        address: 0.0.0.0
+      managed: true
+      replace_entire_config: False
+      commit: False

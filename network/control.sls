@@ -20,7 +20,7 @@ network_dirs:
   - require:
     - file: network_dirs
 
-whole_config_example:
+{{ device_name }}_configuration:
   netconfig.managed:
   - template_name: salt://network/files/{{ device.type }}/base.conf
   - debug: True
