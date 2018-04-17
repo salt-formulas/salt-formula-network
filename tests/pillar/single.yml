@@ -1,5 +1,65 @@
 network:
   control:
     enabled: true
-    bind:
-      address: 0.0.0.0
+    managed: true
+    replace_entire_config: False
+    commit: False
+    config:
+      switch_vlan:
+        ge-0/0/1:
+          units:
+            0:
+              description: goesToNetworkX
+              address: 10.0.0.1/24
+        ge-0/0/0:
+          units:
+            0:
+              description: goesToNetworkY
+              address: 172.16.10.90/24
+        xe-2/0/0:
+          gigether_options: 802.3ad ae0
+        ae0:
+          tagging_support_type: flexible-vlan-tagging
+          aggreg_ether_opts:
+            protocol: lacp
+            mode: active
+          mtu: 9000
+          units:
+            110:
+              vlan_id: 110
+              address: 11.0.0.1/24
+            120:
+              vlan-id: 120
+              address: 12.0.0.1/24
+    device:
+      vsrx01.mydomain.local:
+        type: junos
+        timezone: Europe/Prague
+        nameservers:
+        - 8.8.8.8
+        - 8.8.4.4
+        ntp_servers:
+        - 46.243.48.4
+        - 147.251.48.140
+        auth:
+          password: r00tme
+          user: root
+        chassis:
+        interfaces: ${network:control:config:switch_vlan}
+        routing_options:
+          AS: 64512
+          dyn_tunnel_name: CLOUD
+          source_address: 10.31.4.10
+          encapsulation: gre
+          dest_networks:
+          - 10.31.4.0/24
+          - 10.31.5.0/24
+proxy:
+  proxytype: napalm
+  driver: junos
+  host: vsrx01.mydomain.local
+  username: root
+  passwd: r00tme
+  optional_args:
+    config_format: set
+

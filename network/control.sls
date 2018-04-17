@@ -20,6 +20,16 @@ network_dirs:
   - require:
     - file: network_dirs
 
+{{ device_name }}_configuration:
+  netconfig.managed:
+  - template_name: salt://network/files/{{ device.type }}/base.conf
+  - debug: True
+  - replace: {{ control.replace_entire_config }}
+  - commit: {{ control.commit }}
+  - defaults:
+    device_name: {{ device_name }}
+    device: {{ device|yaml }}
+
 {% if device.get('managed', False) %}
  
 {{ device_name }}_config_enforce
